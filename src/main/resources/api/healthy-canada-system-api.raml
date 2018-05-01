@@ -1,0 +1,28 @@
+#%RAML 1.0
+title: Healthy Canada System API
+version: 1.0
+baseUri: http://localhost:8081/hc/
+
+documentation: 
+  - title: Healthy Canada System API
+    content: This API exposes data from the Government of Canada's **Healthy Canada API**, in a read-only manner. There is no ability to post data to the government's API, so this System API wrapper will always be read-only.
+
+types:
+  Result:
+    type: !include exchange_modules/69d7f319-0d94-4bcb-b6e9-d6d5e28b1545/data-aggregation-demo-data-types/1.0.1/Result.raml
+
+/recalls:
+  /{searchTerm}:
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Result
+        404:
+          body: 
+            application/json:
+        500:
+          body: 
+            application/json:
+              
