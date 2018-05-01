@@ -1,0 +1,51 @@
+	{
+		"results": [
+			{
+				"recallId":"66616",
+				"title":"Certain Irvings Farm Fresh brand pork products recalled due to E. coli O157:H7",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1524628800,
+				"category":[
+					"1"
+				],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/66616\/en"
+			},
+			{
+				"recallId":"66554",
+				"title":"Culinary Creations Gourmet brand &amp; Denny's Express brand roast beef-containing sandwiches recalled due to Listeria monocytogenes",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1524024000,
+				"category":[
+					"1"
+				],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/66554\/en"
+			},
+			{
+				"recallId":"66480",
+				"title":"Culinary Creations Gourmet* brand &amp; Denny's Express* brand roast beef-containing sandwiches recalled due to Listeria monocytogenes",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1523419200,
+				"category":[
+					"1"
+				],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/66480\/en"
+			},
+			{
+				"recallId":"66462",
+				"title":"Culinary Creations brand &amp; Denny's brand roast beef-containing sandwiches recalled due to Listeria monocytogenes",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1523332800,
+				"category":["1"],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/66462\/en"
+			},
+			{
+				"recallId":"65044",
+				"title":"Cavendish Farms brand 1\/4\" X-Ring Onion Rings Crispy Tempura recalled due to undeclared milk",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1510012800,
+				"category":["1"],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/65044\/en"
+			}
+		],
+		"results_count":57
+	}

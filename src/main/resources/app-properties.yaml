@@ -1,0 +1,13 @@
+http:
+  port: "8082"
+  host: "0.0.0.0"
+  
+hc:
+  host: "healthycanadians.gc.ca"
+  port: "80"
+  basepath: "/recall-alert-rappel-avis/api"
+  apipath: "/search"
+  lang: "en"
+  lim: "5"
+  connectionidletimeout: "10000"
+  responsetimeout: "10000"

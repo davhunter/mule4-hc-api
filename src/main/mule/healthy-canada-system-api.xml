@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd ">
-    <http:listener-config name="healthy-canada-system-api-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081" />
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    
+    <http:listener-config name="healthy-canada-system-api-httpListenerConfig" doc:name="HTTP Listener config">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
     </http:listener-config>
+    
     <apikit:config name="healthy-canada-system-api-config" raml="healthy-canada-system-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="healthy-canada-system-api-main">
-        <http:listener config-ref="healthy-canada-system-api-httpListenerConfig" path="/api/*">
+    
+    <configuration-properties doc:name="Configuration properties" doc:id="4f60d5af-8c9f-4168-9e48-375a05f17cf8" file="app-properties.yaml" />
+    
+	<http:request-config name="HTTP_HC_Request" doc:name="HTTP Request configuration" doc:id="3391e433-edf0-49bf-9dba-ee3ba9099679" basePath="${hc.basepath}" responseTimeout="${hc.responsetimeout}" >
+		<http:request-connection host="${hc.host}" port="${hc.port}" connectionIdleTimeout="${hc.connectionidletimeout}" />
+	</http:request-config>
+	<flow name="healthy-canada-system-api-main">
+        <http:listener config-ref="healthy-canada-system-api-httpListenerConfig" path="/hc/*" doc:name="Listener">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="healthy-canada-system-api-config" />
@@ -124,6 +131,40 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\recalls\(searchTerm):healthy-canada-system-api-config">
-        <logger level="INFO" message="get:\recalls\(searchTerm):healthy-canada-system-api-config" />
+		<http:request method="GET" doc:name="Call HC API" doc:id="1a5871dd-02f2-47f7-a8c1-74ef168b6cc3" config-ref="HTTP_HC_Request" path="${hc.apipath}" outputMimeType="application/json">
+			<http:query-params ><![CDATA[#[output applicaton/java
+---
+{
+	search : attributes.uriParams.searchTerm,
+	lang : p('hc.lang'),
+	lim : p('hc.lim')
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="33f1f6cb-486d-44e6-a267-da50aab9e151" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	detailedResults: payload.results map ( result , indexOfResult ) -> {
+		datePublished: result.date_published as DateTime {unit: "milliseconds"} as String {format: "yyyy-MM-dd HH:mm:ss.SSS"},
+		id: result.recallId,
+		source: "Health Canada",
+		text: result.title,
+		categories: result.category map ( category , indexOfCategory ) -> category,
+		title: result.title,
+		department: result.department,
+		user: result.department,
+		url: result.url
+	},
+	simpleResults: payload.results map ( result , indexOfResult ) -> {
+		id: result.recallId,
+		source: "Health Canada",
+		text: result.title,
+		categories: result.category map ( category , indexOfCategory) -> category
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
     </flow>
 </mule>
