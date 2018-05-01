@@ -1,0 +1,27 @@
+{
+  "detailedResults": [
+    {
+      "datePublished": "1970-01-18 15:30:28.800",
+      "id": "1",
+      "source": "Health Canada",
+      "text": "First recall item",
+      "categories": [
+        "1"
+      ],
+      "title": "First recall item",
+      "department": "Canadian Food Inspection Agency",
+      "user": "Canadian Food Inspection Agency",
+      "url": "http://healthycanadians.gc.ca/api/1/en"
+    }
+  ],
+  "simpleResults": [
+    {
+      "id": "1",
+      "source": "Health Canada",
+      "text": "First recall item",
+      "categories": [
+        "1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+	{
+		"results": [
+			{
+				"recallId":"1",
+				"title":"First recall item",
+				"department":"Canadian Food Inspection Agency",
+				"date_published":1524628800,
+				"category":["1"],
+				"url":"http:\/\/healthycanadians.gc.ca\/api\/1\/en"
+			}
+		],
+		"results_count":1
+	}
