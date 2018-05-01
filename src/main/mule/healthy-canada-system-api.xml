@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
     
     <http:listener-config name="healthy-canada-system-api-httpListenerConfig" doc:name="HTTP Listener config">
         <http:listener-connection host="${http.host}" port="${http.port}" />
@@ -21,7 +22,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
                 <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="healthy-canada-system-api-config" />
+        <apikit:router config-ref="healthy-canada-system-api-config" doc:name="APIkit Router"/>
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
@@ -36,8 +37,8 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-            <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <on-error-propagate type="APIKIT:NOT_FOUND" doc:name="On Error Propagate" enableNotifications="true" logException="true">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="c8824cc7-b77a-431c-be3c-ef01433e1fe5">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -45,7 +46,7 @@ output application/json
 {message: "Resource not found"}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -88,8 +89,8 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED" doc:name="On Error Propagate" enableNotifications="true" logException="true">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="286b4a7a-c766-49d8-bad2-34e1da11fb60">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -97,10 +98,23 @@ output application/json
 {message: "Not Implemented"}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="036ad275-dc26-48b4-8fbd-dd4744185b73" >
+				<ee:transform doc:name="Transform Message" doc:id="5e5dcb0d-e44c-405c-a53b-e3364d6ba6c3" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</on-error-propagate>
         </error-handler>
     </flow>
     <flow name="healthy-canada-system-api-console">
@@ -115,7 +129,7 @@ output application/json
         </http:listener>
         <apikit:console config-ref="healthy-canada-system-api-config" />
         <error-handler>
-            <on-error-propagate type="APIKIT:NOT_FOUND">
+            <on-error-propagate type="APIKIT:NOT_FOUND" doc:name="On Error Propagate" enableNotifications="true" logException="true">
                 <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
@@ -140,6 +154,8 @@ output application/json
 	lim : p('hc.lim')
 }]]]></http:query-params>
 		</http:request>
+		<validation:is-not-empty-collection doc:name="Validate Results Returned" doc:id="b39f7e75-ac5f-47f5-83c1-35a384d750d4" values="#[payload.results]" message="No results returned from HC">
+		</validation:is-not-empty-collection>
 		<ee:transform doc:name="Transform Message" doc:id="33f1f6cb-486d-44e6-a267-da50aab9e151" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
