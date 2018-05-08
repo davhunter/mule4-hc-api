@@ -160,6 +160,13 @@ output application/json
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
+
+fun convertCategory(category) = 
+	if (category == "1") "Food" 
+	else if (category == "2") "Vehicles" 
+	else if (category == "3") "Health Products" 
+	else "Consumer Products"
+
 ---
 {
 	detailedResults: payload.results map ( result , indexOfResult ) -> {
@@ -167,7 +174,7 @@ output application/json
 		id: result.recallId,
 		source: "Health Canada",
 		text: result.title,
-		categories: result.category map ( category , indexOfCategory ) -> category,
+		categories: result.category map ( category , indexOfCategory ) -> convertCategory(category),
 		title: result.title,
 		department: result.department,
 		user: result.department,
@@ -177,7 +184,7 @@ output application/json
 		id: result.recallId,
 		source: "Health Canada",
 		text: result.title,
-		categories: result.category map ( category , indexOfCategory) -> category
+		categories: result.category map ( category , indexOfCategory) -> convertCategory(category)
 	}
 }]]></ee:set-payload>
 			</ee:message>
