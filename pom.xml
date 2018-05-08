@@ -34,9 +34,10 @@
 					<cloudHubDeployment>
 						<uri>${deployment.uri}</uri>
 						<muleVersion>${app.runtime}</muleVersion>
+						<!-- username & password must be passed in from outside of the POM -->
 						<username>${username}</username>
 						<password>${password}</password>
-						<applicationName>${artifactId}</applicationName>
+						<applicationName>${project.artifactId}</applicationName>
 						<environment>${deployment.environment}</environment>
 						<region>${deployment.region}</region>
 					</cloudHubDeployment>
