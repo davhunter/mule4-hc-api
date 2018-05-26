@@ -39,6 +39,7 @@
 						<applicationName>${project.artifactId}</applicationName>
 						<environment>${deployment.environment}</environment>
 						<region>${deployment.region}</region>
+						<workerType>Micro</workerType>
 					</cloudHubDeployment>
 				</configuration>
 			</plugin>
