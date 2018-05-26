@@ -51,7 +51,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="VALIDATION:EMPTY_COLLECTION" doc:name="On Error Propagate" enableNotifications="true" logException="true">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="b7cb7a3d-87ba-4f7b-9cb1-053c93a574d5">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -145,6 +145,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\recalls\(searchTerm):healthy-canada-system-api-config">
+		<set-variable value="#[attributes.uriParams.searchTerm]" doc:name="Capture Incoming Search Term" doc:id="9ff10a67-962f-4e3c-8b09-c7522eb0da2a" variableName="initialSearchTerm"/>
 		<http:request method="GET" doc:name="Call HC API" doc:id="1a5871dd-02f2-47f7-a8c1-74ef168b6cc3" config-ref="HTTP_HC_Request" path="${hc.apipath}" outputMimeType="application/json">
 			<http:query-params ><![CDATA[#[output applicaton/java
 ---
@@ -169,6 +170,7 @@ fun convertCategory(category) =
 
 ---
 {
+	searchTerm: vars.initialSearchTerm,
 	detailedResults: payload.results map ( result , indexOfResult ) -> {
 		datePublished: result.date_published as DateTime {unit: "milliseconds"} as String {format: "yyyy-MM-dd HH:mm:ss.SSS"},
 		id: result.recallId,

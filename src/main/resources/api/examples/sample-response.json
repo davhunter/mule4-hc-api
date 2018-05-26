@@ -1,8 +1,8 @@
 {
-  "searchTerm": "searchTerm",
+  "searchTerm": "search term",
   "detailedResults": [
     {
-      "datePublished": "1970-01-18 15:30:28.800",
+      "datePublished": "1970-01-18T15:30:28Z",
       "id": "1",
       "source": "Health Canada",
       "text": "First recall item",
@@ -15,7 +15,7 @@
       "url": "http://healthycanadians.gc.ca/api/1/en"
     },
     {
-      "datePublished": "1970-01-18 11:26:52.800",
+      "datePublished": "1970-01-18T11:26:52Z",
       "id": "2",
       "source": "Health Canada",
       "text": "Second recall item",

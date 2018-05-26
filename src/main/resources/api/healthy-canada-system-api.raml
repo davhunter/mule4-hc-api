@@ -19,10 +19,14 @@ types:
           body: 
             application/json:
               type: Result
+              example: !include examples/sample-response.json
         404:
           body: 
             application/json:
+              example: |
+                {"message": "Resource not found"}
         500:
           body: 
             application/json:
-              
+              example: |
+                {"message": "System error"}
