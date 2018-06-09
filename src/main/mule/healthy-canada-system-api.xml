@@ -146,7 +146,7 @@ output application/json
     </flow>
     <flow name="get:\recalls\(searchTerm):healthy-canada-system-api-config">
 		<set-variable value="#[attributes.uriParams.searchTerm]" doc:name="Capture Incoming Search Term" doc:id="9ff10a67-962f-4e3c-8b09-c7522eb0da2a" variableName="initialSearchTerm"/>
-		<http:request method="GET" doc:name="Call HC API" doc:id="1a5871dd-02f2-47f7-a8c1-74ef168b6cc3" config-ref="HTTP_HC_Request" path="${hc.apipath}" outputMimeType="application/json">
+		<http:request method="GET" doc:name="Call HC API" doc:id="1a5871dd-02f2-47f7-a8c1-74ef168b6cc3" config-ref="HTTP_HC_Request" path="${hc.apipath}">
 			<http:query-params ><![CDATA[#[output applicaton/java
 ---
 {
