@@ -1,21 +1,9 @@
 pipeline {
 	agent any
-	tools {
-		maven 'Maven 3.3.9'
-		jdk 'jdk8'
-	}
 	stages {
-		stage('Initialize') {
-			steps {
-				sh '''
-					echo "PATH = ${PATH}"
-					echo "M2_HOME = ${M2_HOME}"
-					'''
-			}
-		}
 		stage('Build') {
 			steps {
-				echo 'this is a minimal pipeline.'
+				sh 'mvn clean package deploy -Dhttp.port=8084'
 			}
 		}
 	}
@@ -23,6 +11,11 @@ pipeline {
 		always {
 			echo 'finished build'
 			deleteDir()
+		}
+		success {
+			mail to: 'davhunter@deloitte.ca',
+			     subject: "Build completed: ${currentBuild.fullDisplayName}",
+			     body: "Build successfully completed. ${env.BUILD_URL}"
 		}
 		failure {
 			mail to: 'davhunter@deloitte.ca',
